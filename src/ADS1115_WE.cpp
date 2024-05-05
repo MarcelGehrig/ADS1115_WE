@@ -256,18 +256,22 @@ void ADS1115_WE::delayAccToRate(convRate cr){
     }
 }   
     
-void ADS1115_WE::setCompareChannels(ADS1115_MUX mux){
+uint8_t ADS1115_WE::setCompareChannels(ADS1115_MUX mux){
     uint16_t currentConfReg = readRegister(ADS1115_CONFIG_REG);
     currentConfReg &= ~(0xF000);    
     currentConfReg |= (mux);
-    writeRegister(ADS1115_CONFIG_REG, currentConfReg);
+    uint8_t ret = 0;
+    ret = writeRegister(ADS1115_CONFIG_REG, currentConfReg);
+    if (ret != 0) return ret;
     
     if(!(currentConfReg & 0x0100)){  // => if not single shot mode
         convRate rate = getConvRate();      
         for(int i=0; i<2; i++){ // waiting time for two measurements
             delayAccToRate(rate);
         }                 
-    }       
+    }
+
+    return 0;
 }
 
 void ADS1115_WE::setCompareChannels_nonblock(ADS1115_MUX mux){

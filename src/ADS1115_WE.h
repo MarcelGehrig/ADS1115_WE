@@ -265,7 +265,17 @@ class ADS1115_WE
          * ADS1115_COMP_2_GND  ->  compares 2 with GND
          * ADS1115_COMP_3_GND  ->  compares 3 with GND
         */
-        void setCompareChannels(ADS1115_MUX mux);
+       /*
+        https://www.arduino.cc/reference/en/language/functions/communication/wire/endtransmission/
+        endTransmission() returns:
+        0: success.
+        1: data too long to fit in transmit buffer.
+        2: received NACK on transmit of address.
+        3: received NACK on transmit of data.
+        4: other error.
+        5: timeout
+        */
+        uint8_t setCompareChannels(ADS1115_MUX mux);
 
         /* Set to channel (0-3) in single ended mode in a non blocking way without delay
          */
